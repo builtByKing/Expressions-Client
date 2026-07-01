@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react'
-import Image from 'next/image'
+import { PageHero } from '@/components/PageHero'
+import { SectionLabel } from '@/components/SectionLabel'
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -53,38 +54,21 @@ export default function ContactPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Hero Section */}
-      <section className="relative py-20 md:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        {/* Background Elements with Glow */}
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-0 right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-pulse-scale"></div>
-          <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-accent/10 rounded-full blur-3xl"></div>
-          <div className="absolute top-1/3 left-0 w-72 h-72 bg-accent/5 rounded-full blur-3xl animate-float"></div>
-        </div>
+      <PageHero
+        label="Contact"
+        title={<>Start Your <span className="text-accent italic animate-studio-glow">Project</span></>}
+        description="Ready to bring your architectural vision to life? Get in touch with our team to discuss your project and schedule a consultation."
+      />
 
-        <div className="max-w-4xl mx-auto text-center relative z-10">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 text-balance">
-            Start Your <span className="text-accent animate-glow">Project</span>
-          </h1>
-          <p className="text-xl text-muted-foreground text-balance mb-8">
-            Ready to bring your architectural vision to life? Get in touch with our team to discuss your project and schedule a consultation.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <CheckCircle className="w-4 h-4 text-accent" />
-              <span className="text-sm">Expert Team</span>
-            </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <CheckCircle className="w-4 h-4 text-accent" />
-              <span className="text-sm">Fast Response</span>
-            </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <CheckCircle className="w-4 h-4 text-accent" />
-              <span className="text-sm">Custom Solutions</span>
-            </div>
+      {/* Trust badges */}
+      <div className="flex flex-wrap justify-center gap-6 pb-12 px-4 -mt-8">
+        {['Expert Team', 'Fast Response', 'Custom Solutions'].map((item) => (
+          <div key={item} className="flex items-center gap-2 text-muted-foreground text-sm">
+            <CheckCircle className="w-4 h-4 text-accent" />
+            <span>{item}</span>
           </div>
-        </div>
-      </section>
+        ))}
+      </div>
 
       {/* Contact Section */}
       <section className="py-20 md:py-32 px-4 sm:px-6 lg:px-8 relative">
@@ -96,11 +80,12 @@ export default function ContactPage() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Contact Information */}
           <div>
-            <h2 className="text-3xl font-bold mb-8">Get In Touch</h2>
+            <SectionLabel className="mb-6">Reach Out</SectionLabel>
+            <h2 className="font-display text-3xl font-light mb-8">Get In Touch</h2>
 
             <div className="space-y-6">
               {/* Email */}
-              <div className="group bg-card border border-border rounded-lg p-6 hover:border-accent transition-all duration-300 hover:shadow-lg hover:shadow-accent/10">
+              <div className="group studio-card p-6">
                 <div className="flex gap-4">
                   <div className="flex-shrink-0">
                     <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-accent/20 group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
@@ -117,7 +102,7 @@ export default function ContactPage() {
               </div>
 
               {/* Phone */}
-              <div className="group bg-card border border-border rounded-lg p-6 hover:border-accent transition-all duration-300 hover:shadow-lg hover:shadow-accent/10">
+              <div className="group studio-card p-6">
                 <div className="flex gap-4">
                   <div className="flex-shrink-0">
                     <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-accent/20 group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
@@ -134,7 +119,7 @@ export default function ContactPage() {
               </div>
 
               {/* Address */}
-              <div className="group bg-card border border-border rounded-lg p-6 hover:border-accent transition-all duration-300 hover:shadow-lg hover:shadow-accent/10">
+              <div className="group studio-card p-6">
                 <div className="flex gap-4">
                   <div className="flex-shrink-0">
                     <div className="flex items-center justify-center h-12 w-12 rounded-lg bg-accent/20 group-hover:bg-accent group-hover:text-accent-foreground transition-colors">
@@ -154,7 +139,7 @@ export default function ContactPage() {
             </div>
 
             {/* Hours */}
-            <div className="mt-12 bg-card border border-border rounded-lg p-6 hover:border-accent transition-all duration-300">
+            <div className="mt-12 studio-card p-6">
               <h3 className="font-semibold mb-4 flex items-center gap-2">
                 <div className="w-2 h-2 bg-accent rounded-full"></div>
                 Business Hours
@@ -178,8 +163,9 @@ export default function ContactPage() {
 
           {/* Contact Form */}
           <div className="lg:col-span-2">
-            <div className="bg-card border border-border rounded-lg p-8">
-              <h2 className="text-2xl font-bold mb-6">Tell Us About Your Project</h2>
+            <div className="studio-card p-8 md:p-10">
+              <SectionLabel className="mb-6">Project Inquiry</SectionLabel>
+              <h2 className="font-display text-2xl font-light mb-6">Tell Us About Your Project</h2>
 
               {submitted && (
                 <div className="mb-6 bg-accent/10 border border-accent/30 rounded-lg p-4 text-accent">

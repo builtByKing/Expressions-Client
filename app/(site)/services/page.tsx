@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import Image from 'next/image'
 import { AnimatedStrip } from '@/components/AnimatedStrip'
+import { SectionLabel } from '@/components/SectionLabel'
 
 export const metadata = {
   title: 'Our Services | Expressions Architects',
@@ -81,11 +82,11 @@ const services = [
 export default function ServicesPage() {
   return (
     <div className="min-h-screen bg-background text-foreground overflow-hidden">
-      {/* Hero Section - Extreme Impact */}
-      <section className="relative py-32 md:py-56 px-4 sm:px-6 lg:px-8 overflow-hidden">
+      {/* Hero Section */}
+      <section className="relative py-32 md:py-48 px-4 sm:px-6 lg:px-8 overflow-hidden studio-section">
         <div className="absolute inset-0 -z-10">
-          <div className="absolute -top-40 -right-40 w-96 h-96 bg-accent/30 rounded-full blur-3xl animate-pulse-scale"></div>
-          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-float"></div>
+          <div className="absolute -top-40 -right-40 w-96 h-96 bg-accent/30 rounded-full blur-3xl animate-studio-pulse-scale"></div>
+          <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-accent/20 rounded-full blur-3xl animate-studio-float"></div>
           <div className="absolute top-1/2 right-1/4 w-72 h-72 bg-accent/15 rounded-full blur-3xl"></div>
         </div>
 
@@ -93,12 +94,9 @@ export default function ServicesPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
               <div>
-                <span className="inline-flex items-center gap-2 bg-accent/20 text-accent px-4 py-2 rounded-full text-xs font-bold tracking-widest mb-6 uppercase">
-                  <span className="w-2 h-2 bg-accent rounded-full"></span>
-                  Premium Services
-                </span>
-                <h1 className="text-7xl md:text-8xl font-black leading-[1.1] mb-6">
-                  Architecture <span className="text-accent block">Redefined</span>
+                <SectionLabel className="mb-6">Premium Services</SectionLabel>
+                <h1 className="font-display text-6xl md:text-8xl font-light leading-[1.05] mb-6">
+                  Architecture <span className="text-accent italic block">Redefined</span>
                 </h1>
                 <p className="text-lg md:text-xl text-muted-foreground leading-relaxed max-w-lg">
                   Transform your vision into extraordinary spaces through our comprehensive architectural expertise and innovative design solutions.
@@ -153,12 +151,9 @@ export default function ServicesPage() {
 
         <div className="max-w-7xl mx-auto">
           <div className="mb-32 text-center space-y-6">
-            <span className="inline-flex items-center gap-2 bg-accent/20 text-accent px-4 py-2 rounded-full text-xs font-bold tracking-widest uppercase">
-              <span className="w-2 h-2 bg-accent rounded-full"></span>
-              Our Expertise
-            </span>
-            <h2 className="text-6xl md:text-7xl font-black leading-tight">
-              Complete Service <span className="text-accent">Solutions</span>
+            <SectionLabel className="mb-6 justify-center">Our Expertise</SectionLabel>
+            <h2 className="font-display text-5xl md:text-7xl font-light leading-tight">
+              Complete Service <span className="text-accent italic">Solutions</span>
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
               From concept through completion, we deliver comprehensive architectural services backed by expertise, innovation, and dedication to excellence.
@@ -182,7 +177,7 @@ export default function ServicesPage() {
                   <div className="absolute -inset-1 bg-gradient-to-r from-accent/40 via-accent/20 to-accent/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"></div>
                   
                   {/* Card */}
-                  <div className="relative bg-card border-2 border-border rounded-3xl p-8 md:p-10 h-full hover:border-accent transition-all duration-300 overflow-hidden">
+                  <div className="relative studio-card border-2 border-border/50 rounded-3xl p-8 md:p-10 h-full hover:border-accent/40 transition-all duration-300 overflow-hidden">
                     <div className="absolute top-0 right-0 w-40 h-40 bg-accent/5 rounded-full -mr-20 -mt-20 group-hover:scale-150 transition-transform duration-300"></div>
 
                     <div className="relative z-10 space-y-6">
@@ -221,12 +216,9 @@ export default function ServicesPage() {
 
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="mb-32 text-center space-y-6">
-            <span className="inline-flex items-center gap-2 bg-accent/20 text-accent px-4 py-2 rounded-full text-xs font-bold tracking-widest uppercase">
-              <span className="w-2 h-2 bg-accent rounded-full"></span>
-              How We Work
-            </span>
-            <h2 className="text-6xl md:text-7xl font-black">
-              Our Design <span className="text-accent">Process</span>
+            <SectionLabel className="mb-6 justify-center">How We Work</SectionLabel>
+            <h2 className="font-display text-5xl md:text-7xl font-light">
+              Our Design <span className="text-accent italic">Process</span>
             </h2>
           </div>
 
@@ -255,12 +247,12 @@ export default function ServicesPage() {
       {/* CTA Section - Full Impact */}
       <section className="py-32 md:py-48 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
         <div className="absolute inset-0 -z-10">
-          <div className="absolute top-1/2 right-0 w-96 h-96 bg-accent/20 rounded-full blur-3xl -translate-y-1/2 animate-pulse-scale"></div>
+          <div className="absolute top-1/2 right-0 w-96 h-96 bg-accent/20 rounded-full blur-3xl -translate-y-1/2 animate-studio-pulse-scale"></div>
           <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-accent/10 rounded-full blur-3xl"></div>
         </div>
 
         <div className="max-w-5xl mx-auto text-center relative z-10 space-y-8">
-          <h2 className="text-6xl md:text-7xl font-black leading-tight">
+          <h2 className="font-display text-5xl md:text-7xl font-light leading-tight">
             Ready to Transform Your Vision?
           </h2>
           <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-2xl mx-auto">

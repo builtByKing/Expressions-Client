@@ -1,5 +1,7 @@
 import Image from 'next/image'
 import { Award, Users, Globe, Leaf } from 'lucide-react'
+import { PageHero } from '@/components/PageHero'
+import { SectionLabel } from '@/components/SectionLabel'
 
 export const metadata = {
   title: 'About Us | Expressions Architects',
@@ -9,24 +11,19 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Hero Section */}
-      <section className="py-20 md:py-32 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 text-balance">
-            About <span className="text-accent">Expressions Architects</span>
-          </h1>
-          <p className="text-xl text-muted-foreground text-balance">
-            We are architects and urban designers dedicated to creating exceptional spaces that reflect our clients&apos; visions while respecting environmental responsibility.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        label="Our Studio"
+        title={<>About <span className="text-accent italic">Expressions</span> Architects</>}
+        description="We are architects and urban designers dedicated to creating exceptional spaces that reflect our clients' visions while respecting environmental responsibility."
+      />
 
       {/* Mission Section */}
-      <section className="py-20 md:py-32 px-4 sm:px-6 lg:px-8 bg-muted/30">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <section className="py-24 md:py-32 px-4 sm:px-6 lg:px-8 bg-card/50 border-y border-border/30">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <div>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-balance">
-              Our <span className="text-accent">Mission & Values</span>
+            <SectionLabel className="mb-6">Mission & Values</SectionLabel>
+            <h2 className="font-display text-4xl md:text-5xl font-light mb-8 text-balance leading-tight">
+              Our <span className="text-accent italic">Mission</span> & Values
             </h2>
             <p className="text-lg text-muted-foreground mb-6">
               At Expressions Architects, we believe in creating buildings and spaces that are not just beautiful, but deeply meaningful. In a world of copying and duplication, our firm is distinguished by our commitment to custom-designed, modern, and environmentally sound architecture.
@@ -35,7 +32,7 @@ export default function AboutPage() {
               We provide exceptional services on residential, educational, commercial, and housing projects. Our dedicated approach results in buildings tailor-made for each client&apos;s unique needs and aspirations.
             </p>
           </div>
-          <div className="relative h-96 rounded-lg overflow-hidden shadow-lg">
+          <div className="studio-image-frame h-96 border border-border/30 shadow-xl">
             <Image
               src="/vision.png"
               alt="Our vision and mission"
@@ -54,8 +51,8 @@ export default function AboutPage() {
         </div>
 
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold mb-16 text-center text-balance">
-            Our Core <span className="text-accent">Values</span>
+          <h2 className="font-display text-4xl md:text-5xl font-light mb-16 text-center text-balance">
+            Our Core <span className="text-accent italic">Values</span>
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -89,7 +86,7 @@ export default function AboutPage() {
               return (
                 <div
                   key={idx}
-                  className="group bg-card border border-border rounded-lg p-8 hover:border-accent transition-all duration-300 hover:shadow-2xl hover:shadow-accent/30 relative overflow-hidden"
+                  className="group studio-card p-8 hover:shadow-2xl hover:shadow-accent/10 relative overflow-hidden"
                 >
                   <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-300"></div>
                   <div className="relative z-10">
@@ -109,8 +106,8 @@ export default function AboutPage() {
       {/* Experience Section */}
       <section className="py-20 md:py-32 px-4 sm:px-6 lg:px-8 bg-muted/30">
         <div className="max-w-7xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold mb-16 text-center">
-            Why Choose <span className="text-accent">Expressions Architects</span>
+          <h2 className="font-display text-4xl md:text-5xl font-light mb-16 text-center">
+            Why Choose <span className="text-accent italic">Expressions</span>
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -152,8 +149,8 @@ export default function AboutPage() {
                   'Certified professionals in LEED, AIA, and other leading architectural and sustainability organizations.',
               },
             ].map((stat, idx) => (
-              <div key={idx} className="bg-card border border-border rounded-lg p-8 text-center">
-                <div className="text-5xl font-bold text-accent mb-2">{stat.number}</div>
+              <div key={idx} className="studio-card p-8 text-center">
+                <div className="font-display text-5xl font-light text-accent mb-2">{stat.number}</div>
                 <h3 className="text-lg font-bold mb-3">{stat.label}</h3>
                 <p className="text-muted-foreground text-sm">{stat.description}</p>
               </div>
@@ -171,8 +168,8 @@ export default function AboutPage() {
 
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-balance">
-              Our <span className="text-accent">Leadership & Team</span>
+            <h2 className="font-display text-4xl md:text-5xl font-light mb-6 text-balance">
+              Our <span className="text-accent italic">Leadership</span> & Team
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto text-balance">
               Award-winning architects, designers, and specialists dedicated to creating exceptional spaces and transforming visions into reality.
@@ -185,14 +182,14 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
               {[
                 {
-                  name: 'James Richardson',
+                  name: 'Bonga Dlamini',
                   role: 'Principal Architect & Director',
                   image: '/team-director-1.png',
                   bio: '25+ years in residential and commercial design',
                 },
                 {
-                  name: 'Sarah Mitchell',
-                  role: 'Urban Design Director',
+                  name: 'Wandile Khumalo',
+                  role: 'Principal Architect & Director',
                   image: '/team-director-2.png',
                   bio: '20+ years in master planning and urban development',
                 },
@@ -223,14 +220,14 @@ export default function AboutPage() {
               <div className="group bg-card border border-border rounded-lg overflow-hidden hover:border-accent transition-all duration-300 hover:shadow-lg hover:shadow-accent/20">
                 <div className="relative h-64 overflow-hidden bg-muted">
                   <Image
-                    src="/team-administrator.png"
+                    src="/team-administrator.jpg"
                     alt="Administrator"
                     fill
                     className="object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
                 <div className="p-6 text-center">
-                  <h4 className="text-xl font-bold mb-1">Patricia Chen</h4>
+                  <h4 className="text-xl font-bold mb-1">Gcebile Dlamini</h4>
                   <p className="text-accent font-semibold text-sm mb-3">Operations Administrator</p>
                   <p className="text-muted-foreground text-sm">Expert coordination and project management</p>
                 </div>
@@ -246,25 +243,31 @@ export default function AboutPage() {
                 {
                   name: 'Marcus Thompson',
                   role: 'Senior Technologist',
-                  image: '/team-tech-1.png',
+                  image: '/team-tech-1.jpg',
                   specialty: '3D Visualization & BIM',
                 },
                 {
                   name: 'Emma Rodriguez',
                   role: 'Design Technologist',
-                  image: '/team-tech-2.png',
+                  image: '/team-tech-2.jpg',
                   specialty: 'Sustainable Design',
                 },
                 {
                   name: 'Lisa Wong',
                   role: 'Technologist',
-                  image: '/team-tech-3.png',
+                  image: '/team-tech-3.jpg',
                   specialty: 'Commercial Projects',
                 },
                 {
                   name: 'David Kumar',
                   role: 'Technical Specialist',
-                  image: '/team-tech-4.png',
+                  image: '/team-tech-4.jpg',
+                  specialty: 'Construction Admin',
+                },
+                {
+                  name: 'Simile Mohamed Mabuza',
+                  role: 'Technical Specialist',
+                  image: '/team-tech-5.jpg',
                   specialty: 'Construction Admin',
                 },
               ].map((member, idx) => (
@@ -292,8 +295,8 @@ export default function AboutPage() {
       {/* Approach Section */}
       <section className="py-20 md:py-32 px-4 sm:px-6 lg:px-8 bg-muted/30">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl md:text-5xl font-bold mb-16 text-center text-balance">
-            Our <span className="text-accent">Approach</span>
+          <h2 className="font-display text-4xl md:text-5xl font-light mb-16 text-center text-balance">
+            Our <span className="text-accent italic">Approach</span>
           </h2>
 
           <div className="space-y-8">
@@ -324,7 +327,7 @@ export default function AboutPage() {
                   'Our ultimate goal is to create immense value on our clients&apos; projects. We deliver buildings and spaces that enhance quality of life, increase property value, and stand the test of time.',
               },
             ].map((approach, idx) => (
-              <div key={idx} className="bg-card border border-border rounded-lg p-8">
+              <div key={idx} className="studio-card p-8">
                 <div className="flex items-start gap-4">
                   <div className="flex-shrink-0">
                     <div className="flex items-center justify-center h-10 w-10 rounded-full bg-accent text-accent-foreground font-bold">

@@ -21,7 +21,7 @@ export function AnimatedStrip({
   return (
     <div className={cn('relative overflow-hidden bg-accent py-4 md:py-6 -skew-y-2', className)}>
       {/* Animated scroll container */}
-      <div className="flex gap-8 animate-scroll whitespace-nowrap">
+      <div className="flex gap-8 animate-studio-scroll whitespace-nowrap">
         {/* First set */}
         {items.map((item, idx) => (
           <div key={idx} className="flex items-center gap-8 text-accent-foreground font-bold text-sm md:text-base tracking-wider flex-shrink-0">

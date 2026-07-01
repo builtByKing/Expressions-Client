@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { projects } from '@/lib/projects'
 import { ChevronRight } from 'lucide-react'
+import { PageHero } from '@/components/PageHero'
 
 export default function ProjectsPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
@@ -16,28 +17,22 @@ export default function ProjectsPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Hero Section */}
-      <section className="py-20 md:py-32 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 text-balance">
-            Our <span className="text-accent">Project Portfolio</span>
-          </h1>
-          <p className="text-xl text-muted-foreground text-balance">
-            Explore our collection of completed architectural projects showcasing our expertise, innovation, and commitment to excellence.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        label="Portfolio"
+        title={<>Our <span className="text-accent italic">Project</span> Portfolio</>}
+        description="Explore our collection of completed architectural projects showcasing our expertise, innovation, and commitment to excellence."
+      />
 
       {/* Filter Buttons */}
-      <section className="py-8 px-4 sm:px-6 lg:px-8">
+      <section className="py-8 px-4 sm:px-6 lg:px-8 border-b border-border/30">
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-wrap gap-3 justify-center">
             <button
               onClick={() => setSelectedCategory(null)}
-              className={`px-6 py-2 rounded-full font-medium transition-colors ${
+              className={`px-6 py-2.5 rounded-full font-medium text-sm uppercase tracking-wide transition-all duration-300 ${
                 selectedCategory === null
-                  ? 'bg-accent text-accent-foreground'
-                  : 'bg-secondary text-foreground hover:bg-accent hover:text-accent-foreground'
+                  ? 'bg-accent text-accent-foreground shadow-lg shadow-accent/20'
+                  : 'bg-card border border-border/50 text-foreground hover:border-accent/50 hover:text-accent'
               }`}
             >
               All Projects
@@ -46,10 +41,10 @@ export default function ProjectsPage() {
               <button
                 key={cat}
                 onClick={() => setSelectedCategory(cat)}
-                className={`px-6 py-2 rounded-full font-medium transition-colors capitalize ${
+                className={`px-6 py-2.5 rounded-full font-medium text-sm uppercase tracking-wide transition-all duration-300 capitalize ${
                   selectedCategory === cat
-                    ? 'bg-accent text-accent-foreground'
-                    : 'bg-secondary text-foreground hover:bg-accent hover:text-accent-foreground'
+                    ? 'bg-accent text-accent-foreground shadow-lg shadow-accent/20'
+                    : 'bg-card border border-border/50 text-foreground hover:border-accent/50 hover:text-accent'
                 }`}
               >
                 {cat}
@@ -60,13 +55,13 @@ export default function ProjectsPage() {
       </section>
 
       {/* Projects Grid */}
-      <section className="py-20 md:py-32 px-4 sm:px-6 lg:px-8">
+      <section className="py-24 md:py-32 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {filteredProjects.map((project) => (
               <Link key={project.slug} href={`/projects/${project.slug}`}>
                 <div className="group">
-                  <div className="relative h-80 rounded-lg overflow-hidden mb-6 cursor-pointer">
+                <div className="studio-image-frame h-80 mb-6 cursor-pointer border border-border/30">
                     <Image
                       src={project.image}
                       alt={project.title}
@@ -86,7 +81,7 @@ export default function ProjectsPage() {
                     <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/30 rounded-full px-3 py-1 mb-3">
                       <span className="text-xs font-semibold text-accent capitalize">{project.category}</span>
                     </div>
-                    <h3 className="text-2xl font-bold mb-2 group-hover:text-accent transition-colors">
+                    <h3 className="font-display text-2xl font-light mb-2 group-hover:text-accent transition-colors">
                       {project.title}
                     </h3>
                     <p className="text-muted-foreground mb-4">{project.shortDescription}</p>

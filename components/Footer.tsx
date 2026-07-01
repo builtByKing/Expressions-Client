@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { ArrowRight, Mail, Phone, MapPin } from 'lucide-react';
+import { SectionLabel } from '@/components/SectionLabel';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -19,17 +20,12 @@ export default function Footer() {
         {/* Top Section - CTA */}
         <div className="mb-20 pb-20 border-b border-border/50">
           <div className="max-w-3xl space-y-6">
-            <div>
-              <span className="inline-flex items-center gap-2 bg-accent/20 text-accent px-4 py-2 rounded-full text-xs font-bold tracking-widest uppercase mb-6">
-                <span className="w-2 h-2 bg-accent rounded-full"></span>
-                Let's Connect
-              </span>
-            </div>
-            <h2 className="text-5xl md:text-6xl font-black leading-tight">
-              Ready to Create Something <span className="text-accent">Extraordinary?</span>
+            <SectionLabel className="mb-6">Let&apos;s Connect</SectionLabel>
+            <h2 className="font-display text-5xl md:text-6xl font-light leading-tight">
+              Ready to Create Something <span className="text-accent italic">Extraordinary?</span>
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
-              Let's discuss your vision and how our architectural expertise can transform your space into something truly remarkable.
+              Let&apos;s discuss your vision and how our architectural expertise can transform your space into something truly remarkable.
             </p>
             <Link href="/contact" className="inline-flex items-center gap-3 group">
               <button className="bg-accent hover:bg-accent/90 text-accent-foreground px-8 py-4 rounded-xl font-bold uppercase tracking-wide shadow-lg hover:shadow-xl hover:shadow-accent/50 transition-all">
@@ -45,10 +41,13 @@ export default function Footer() {
           {/* Brand */}
           <div className="space-y-4">
             <Link href="/" className="flex items-center gap-2 font-bold text-xl group w-fit">
-              <div className="w-10 h-10 bg-gradient-to-br from-accent to-accent/80 rounded-xl flex items-center justify-center group-hover:shadow-lg group-hover:shadow-accent/50 transition-all">
+              <div className="w-10 h-10 bg-gradient-to-br from-accent to-accent/80 rounded-xl flex items-center justify-center group-hover:shadow-lg group-hover:shadow-accent/40 transition-all">
                 <span className="text-accent-foreground font-black">EA</span>
               </div>
-              <span>Expressions</span>
+              <div className="flex flex-col leading-none">
+                <span>Expressions</span>
+                <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium">Architects</span>
+              </div>
             </Link>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Custom designed modern and environmentally sound buildings tailored to each client's unique vision.

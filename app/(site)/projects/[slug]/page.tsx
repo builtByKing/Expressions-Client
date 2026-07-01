@@ -58,7 +58,7 @@ export default async function ProjectDetailPage(props: ProjectPageProps) {
             <div className="inline-flex items-center gap-2 bg-accent/10 border border-accent/30 rounded-full px-3 py-1 mb-4">
               <span className="text-xs font-semibold text-accent capitalize">{project.category}</span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-bold text-white">{project.title}</h1>
+            <h1 className="font-display text-4xl md:text-5xl font-light text-white">{project.title}</h1>
           </div>
         </div>
       </section>
@@ -69,7 +69,7 @@ export default async function ProjectDetailPage(props: ProjectPageProps) {
           <div className="lg:col-span-2">
             {/* Description */}
             <div className="mb-12">
-              <h2 className="text-3xl font-bold mb-4">Project Overview</h2>
+              <h2 className="font-display text-3xl font-light mb-4">Project Overview</h2>
               <p className="text-lg text-muted-foreground">{project.description}</p>
             </div>
 
@@ -121,7 +121,7 @@ export default async function ProjectDetailPage(props: ProjectPageProps) {
           {/* Sidebar */}
           <div>
             {/* Project Details Card */}
-            <div className="bg-card border border-border rounded-lg p-8 mb-8 sticky top-24">
+            <div className="studio-card p-8 mb-8 sticky top-24">
               <h3 className="text-xl font-bold mb-6">Project Details</h3>
 
               <div className="space-y-6">
@@ -192,8 +192,8 @@ export default async function ProjectDetailPage(props: ProjectPageProps) {
       {relatedProjects.length > 0 && (
         <section className="py-20 md:py-32 px-4 sm:px-6 lg:px-8 bg-muted/30">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-4xl md:text-5xl font-bold mb-12 text-center">
-              More <span className="text-accent">Featured Projects</span>
+            <h2 className="font-display text-4xl md:text-5xl font-light mb-12 text-center">
+              More <span className="text-accent italic">Featured</span> Projects
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -226,8 +226,8 @@ export default async function ProjectDetailPage(props: ProjectPageProps) {
       {/* CTA Section */}
       <section className="py-20 md:py-32 px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-balance">
-            Ready to Start Your <span className="text-accent">Project?</span>
+          <h2 className="font-display text-4xl md:text-5xl font-light mb-6 text-balance">
+            Ready to Start Your <span className="text-accent italic">Project?</span>
           </h2>
           <p className="text-xl text-muted-foreground mb-8 text-balance">
             Let&apos;s discuss how we can bring your architectural vision to life with the same excellence you see here.
