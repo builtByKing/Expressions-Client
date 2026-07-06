@@ -48,7 +48,7 @@ export function Navigation() {
         className={cn(
           'sticky top-0 z-50 w-full transition-all duration-500',
           scrolled || mobileOpen
-            ? 'bg-background/90 backdrop-blur-xl -webkit-backdrop-blur-xl border-b border-border/40 shadow-lg shadow-black/10'
+            ? 'bg-white/90 dark:bg-[rgb(15,15,15)]/90 backdrop-blur-xl -webkit-backdrop-blur-xl border-b border-border/40 shadow-lg shadow-black/10'
             : 'bg-transparent border-b border-transparent'
         )}
       >
@@ -101,15 +101,16 @@ export function Navigation() {
           <button
             type="button"
             onClick={(e) => {
-              e.preventDefault();
+              e.stopPropagation();
               setMobileOpen((open) => !open);
             }}
-            onTouchStart={(e) => {
+            onTouchEnd={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               setMobileOpen((open) => !open);
             }}
-            className="md:hidden relative z-[60] flex items-center justify-center w-11 h-11 rounded-xl border border-border/60 bg-card/80 backdrop-blur-sm -webkit-backdrop-blur-sm text-foreground hover:border-accent/50 hover:text-accent transition-all duration-300 touch-manipulation"
-            style={{ WebkitTapHighlightColor: 'transparent' }}
+            className="md:hidden relative z-[60] flex items-center justify-center w-11 h-11 rounded-xl border border-border/60 bg-white/80 dark:bg-background/80 backdrop-blur-sm -webkit-backdrop-blur-sm text-foreground hover:border-accent/50 hover:text-accent transition-all duration-300 touch-manipulation"
+            style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation' }}
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileOpen}
           >
@@ -136,6 +137,7 @@ export function Navigation() {
             'absolute inset-0 bg-black/70 backdrop-blur-sm -webkit-backdrop-blur-sm transition-opacity duration-500',
             mobileOpen ? 'opacity-100' : 'opacity-0'
           )}
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
           onClick={() => setMobileOpen(false)}
         />
 
