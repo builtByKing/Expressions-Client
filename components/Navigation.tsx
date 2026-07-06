@@ -5,6 +5,12 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import {
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerBackdrop,
+} from '@base-ui/react/drawer';
 
 const navItems = [
   { label: 'Home', href: '/' },
@@ -14,7 +20,6 @@ const navItems = [
 ];
 
 export function Navigation() {
-  const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
 
@@ -24,17 +29,6 @@ export function Navigation() {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
-
-  useEffect(() => {
-    setMobileOpen(false);
-  }, [pathname]);
-
-  useEffect(() => {
-    document.body.style.overflow = mobileOpen ? 'hidden' : '';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [mobileOpen]);
 
   const isActive = (href: string) => {
     if (href === '/' && pathname === '/') return true;
@@ -47,7 +41,7 @@ export function Navigation() {
       <header
         className={cn(
           'sticky top-0 z-50 w-full transition-all duration-500',
-          scrolled || mobileOpen
+          scrolled
             ? 'bg-white/90 dark:bg-[rgb(15,15,15)]/90 backdrop-blur-xl -webkit-backdrop-blur-xl border-b border-border/40 shadow-lg shadow-black/10'
             : 'bg-transparent border-b border-transparent'
         )}
@@ -97,97 +91,66 @@ export function Navigation() {
             </button>
           </Link>
 
-          {/* Mobile Hamburger */}
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              setMobileOpen((open) => !open);
-            }}
-            onTouchEnd={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              setMobileOpen((open) => !open);
-            }}
-            className="md:hidden relative z-[60] flex items-center justify-center w-11 h-11 rounded-xl border border-border/60 bg-white/80 dark:bg-background/80 backdrop-blur-sm -webkit-backdrop-blur-sm text-foreground hover:border-accent/50 hover:text-accent transition-all duration-300 touch-manipulation"
-            style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation' }}
-            aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
-            aria-expanded={mobileOpen}
-          >
-            {mobileOpen ? (
-              <X className="w-5 h-5 text-accent" strokeWidth={2.5} />
-            ) : (
+          {/* Mobile Hamburger - using Base UI Drawer Trigger */}
+          <Drawer.Root modal>
+            <Drawer.Trigger
+              className="md:hidden relative z-[60] flex items-center justify-center w-11 h-11 rounded-xl border border-border/60 bg-white/80 dark:bg-background/80 backdrop-blur-sm -webkit-backdrop-blur-sm text-foreground hover:border-accent/50 hover:text-accent transition-all duration-300 touch-manipulation"
+              style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation' }}
+              aria-label="Open menu"
+            >
               <Menu className="w-5 h-5" strokeWidth={2.5} />
-            )}
-          </button>
+            </Drawer.Trigger>
+
+            {/* Mobile Menu Drawer */}
+            <Drawer.Portal>
+              <Drawer.Backdrop
+                className="fixed inset-0 bg-black/70 backdrop-blur-sm -webkit-backdrop-blur-sm transition-opacity duration-500 data-[state=open]:opacity-100 data-[state=closed]:opacity-0"
+                style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
+              />
+              <Drawer.Content
+                className="fixed top-16 left-0 right-0 bottom-0 z-[50] md:hidden bg-background border-t border-border/30 flex flex-col overflow-y-auto transition-transform duration-500 ease-out data-[state=open]:translate-y-0 data-[state=closed]:-translate-y-4 data-[state=closed]:opacity-0"
+              >
+                {/* Studio accent line */}
+                <div className="h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
+
+                <div className="flex-1 flex flex-col gap-2 p-6 pt-10">
+                  {navItems.map((item, index) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={cn(
+                        'font-display text-4xl sm:text-5xl font-light tracking-tight transition-all duration-300 py-3 border-b border-border/20',
+                        isActive(item.href)
+                          ? 'text-accent'
+                          : 'text-foreground hover:text-accent hover:pl-3'
+                      )}
+                      style={{ transitionDelay: `${index * 60}ms` }}
+                    >
+                      <span className="text-xs font-sans tracking-[0.2em] uppercase text-muted-foreground block mb-1">
+                        0{index + 1}
+                      </span>
+                      {item.label}
+                    </Link>
+                  ))}
+                </div>
+
+                {/* Mobile CTA */}
+                <div className="p-6 border-t border-border/30 bg-card/50">
+                  <Link
+                    href="/contact"
+                    className="block w-full bg-accent hover:bg-accent/90 text-accent-foreground px-6 py-4 rounded-2xl font-bold text-center text-xs tracking-[0.15em] uppercase shadow-lg hover:shadow-accent/30 transition-all duration-300"
+                  >
+                    Start Your Project
+                  </Link>
+                  <p className="text-center text-xs text-muted-foreground mt-4 tracking-wide">
+                    hello@expressionsarch.com
+                  </p>
+                </div>
+              </Drawer.Content>
+            </Drawer.Portal>
+          </Drawer.Root>
         </div>
       </header>
-
-      {/* Mobile Menu Overlay — rendered outside header stacking context */}
-      <div
-        className={cn(
-          'fixed inset-0 z-[45] md:hidden transition-all duration-500',
-          mobileOpen ? 'visible pointer-events-auto' : 'invisible pointer-events-none'
-        )}
-        aria-hidden={!mobileOpen}
-      >
-        {/* Backdrop */}
-        <div
-          className={cn(
-            'absolute inset-0 bg-black/70 backdrop-blur-sm -webkit-backdrop-blur-sm transition-opacity duration-500',
-            mobileOpen ? 'opacity-100' : 'opacity-0'
-          )}
-          style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
-          onClick={() => setMobileOpen(false)}
-        />
-
-        {/* Menu Panel */}
-        <div
-          className={cn(
-            'absolute top-16 left-0 right-0 bottom-0 bg-background border-t border-border/30 flex flex-col overflow-y-auto transition-transform duration-500 ease-out',
-            mobileOpen ? 'translate-y-0' : '-translate-y-4 opacity-0'
-          )}
-        >
-          {/* Studio accent line */}
-          <div className="h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
-
-          <div className="flex-1 flex flex-col gap-2 p-6 pt-10">
-            {navItems.map((item, index) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  'font-display text-4xl sm:text-5xl font-light tracking-tight transition-all duration-300 py-3 border-b border-border/20',
-                  isActive(item.href)
-                    ? 'text-accent'
-                    : 'text-foreground hover:text-accent hover:pl-3'
-                )}
-                style={{ transitionDelay: mobileOpen ? `${index * 60}ms` : '0ms' }}
-                onClick={() => setMobileOpen(false)}
-              >
-                <span className="text-xs font-sans tracking-[0.2em] uppercase text-muted-foreground block mb-1">
-                  0{index + 1}
-                </span>
-                {item.label}
-              </Link>
-            ))}
-          </div>
-
-          {/* Mobile CTA */}
-          <div className="p-6 border-t border-border/30 bg-card/50">
-            <Link
-              href="/contact"
-              className="block w-full bg-accent hover:bg-accent/90 text-accent-foreground px-6 py-4 rounded-2xl font-bold text-center text-xs tracking-[0.15em] uppercase shadow-lg hover:shadow-accent/30 transition-all duration-300"
-              onClick={() => setMobileOpen(false)}
-            >
-              Start Your Project
-            </Link>
-            <p className="text-center text-xs text-muted-foreground mt-4 tracking-wide">
-              hello@expressionsarch.com
-            </p>
-          </div>
-        </div>
-      </div>
     </>
   );
 }
