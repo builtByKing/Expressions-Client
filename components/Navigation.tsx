@@ -133,7 +133,7 @@ export function Navigation() {
         {/* Backdrop */}
         <div
           className={cn(
-            'absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-500',
+            'absolute inset-0 bg-black/70 backdrop-blur-sm -webkit-backdrop-blur-sm transition-opacity duration-500',
             mobileOpen ? 'opacity-100' : 'opacity-0'
           )}
           onClick={() => setMobileOpen(false)}
