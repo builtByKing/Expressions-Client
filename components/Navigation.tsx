@@ -48,7 +48,7 @@ export function Navigation() {
         className={cn(
           'sticky top-0 z-50 w-full transition-all duration-500',
           scrolled || mobileOpen
-            ? 'bg-background/90 backdrop-blur-xl border-b border-border/40 shadow-lg shadow-black/10'
+            ? 'bg-background/90 backdrop-blur-xl -webkit-backdrop-blur-xl border-b border-border/40 shadow-lg shadow-black/10'
             : 'bg-transparent border-b border-transparent'
         )}
       >
@@ -100,8 +100,16 @@ export function Navigation() {
           {/* Mobile Hamburger */}
           <button
             type="button"
-            onClick={() => setMobileOpen((open) => !open)}
-            className="md:hidden relative z-[60] flex items-center justify-center w-11 h-11 rounded-xl border border-border/60 bg-card/80 backdrop-blur-sm text-foreground hover:border-accent/50 hover:text-accent transition-all duration-300"
+            onClick={(e) => {
+              e.preventDefault();
+              setMobileOpen((open) => !open);
+            }}
+            onTouchStart={(e) => {
+              e.preventDefault();
+              setMobileOpen((open) => !open);
+            }}
+            className="md:hidden relative z-[60] flex items-center justify-center w-11 h-11 rounded-xl border border-border/60 bg-card/80 backdrop-blur-sm -webkit-backdrop-blur-sm text-foreground hover:border-accent/50 hover:text-accent transition-all duration-300 touch-manipulation"
+            style={{ WebkitTapHighlightColor: 'transparent' }}
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileOpen}
           >
