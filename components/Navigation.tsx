@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
@@ -21,6 +21,9 @@ const navItems = [
 
 export function Navigation() {
   const [scrolled, setScrolled] = useState(false);
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const drawerRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -30,11 +33,23 @@ export function Navigation() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Handle drawer state changes for older iOS Safari
+  const handleOpenChange = useCallback((open: boolean) => {
+    setIsTransitioning(true);
+    setIsMobileOpen(open);
+    // Reset transition state after animation
+    setTimeout(() => setIsTransitioning(false), 500);
+  }, []);
+
   const isActive = (href: string) => {
     if (href === '/' && pathname === '/') return true;
     if (href !== '/' && pathname.startsWith(href)) return true;
     return false;
   };
+
+  const closeMobileMenu = useCallback(() => {
+    setIsMobileOpen(false);
+  }, []);
 
   return (
     <>
@@ -42,9 +57,19 @@ export function Navigation() {
         className={cn(
           'sticky top-0 z-50 w-full transition-all duration-500',
           scrolled
-            ? 'bg-white/90 dark:bg-[rgb(15,15,15)]/90 backdrop-blur-xl -webkit-backdrop-blur-xl border-b border-border/40 shadow-lg shadow-black/10'
+            ? 'bg-white/90 dark:bg-[rgb(15,15,15)]/90 backdrop-blur-xl -webkit-backdrop-blur-xl border-b border-border/40 shadow-lg shadow-black/10 bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(15,15,15,0.9)]'
             : 'bg-transparent border-b border-transparent'
         )}
+        style={{
+          // Fallback for browsers without backdrop-filter support
+          backgroundColor: scrolled
+            ? 'rgba(255, 255, 255, 0.9)'
+            : 'transparent',
+          // Fallback for dark mode
+          '@media (prefers-color-scheme: dark)': {
+            backgroundColor: scrolled ? 'rgba(15, 15, 15, 0.9)' : 'transparent',
+          },
+        }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
@@ -91,24 +116,54 @@ export function Navigation() {
             </button>
           </Link>
 
-          {/* Mobile Hamburger - using Base UI Drawer Trigger */}
-          <Drawer.Root modal>
+          {/* Mobile Hamburger - using Base UI Drawer Trigger with enhanced touch handling */}
+          <Drawer.Root modal open={isMobileOpen} onOpenChange={handleOpenChange}>
             <Drawer.Trigger
               className="md:hidden relative z-[60] flex items-center justify-center w-11 h-11 rounded-xl border border-border/60 bg-white/80 dark:bg-background/80 backdrop-blur-sm -webkit-backdrop-blur-sm text-foreground hover:border-accent/50 hover:text-accent transition-all duration-300 touch-manipulation"
-              style={{ WebkitTapHighlightColor: 'transparent', touchAction: 'manipulation' }}
+              style={{
+                WebkitTapHighlightColor: 'transparent',
+                touchAction: 'manipulation',
+                // Fallback background for older browsers without backdrop-filter
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+              }}
               aria-label="Open menu"
+              aria-expanded={isMobileOpen}
+              aria-controls="mobile-menu"
+              // Enhanced touch handling for older iOS Safari
+              onTouchStart={(e: React.TouchEvent) => {
+                e.currentTarget.click();
+              }}
+              onClick={() => { }}
             >
-              <Menu className="w-5 h-5" strokeWidth={2.5} />
+              {isMobileOpen ? (
+                <X className="w-5 h-5" strokeWidth={2.5} aria-hidden="true" />
+              ) : (
+                <Menu className="w-5 h-5" strokeWidth={2.5} aria-hidden="true" />
+              )}
             </Drawer.Trigger>
 
             {/* Mobile Menu Drawer */}
             <Drawer.Portal>
               <Drawer.Backdrop
                 className="fixed inset-0 bg-black/70 backdrop-blur-sm -webkit-backdrop-blur-sm transition-opacity duration-500 data-[state=open]:opacity-100 data-[state=closed]:opacity-0"
-                style={{ backgroundColor: 'rgba(0, 0, 0, 0.7)' }}
+                style={{
+                  // Fallback for browsers without backdrop-filter
+                  backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                }}
               />
               <Drawer.Content
-                className="fixed top-16 left-0 right-0 bottom-0 z-[50] md:hidden bg-background border-t border-border/30 flex flex-col overflow-y-auto transition-transform duration-500 ease-out data-[state=open]:translate-y-0 data-[state=closed]:-translate-y-4 data-[state=closed]:opacity-0"
+                id="mobile-menu"
+                ref={drawerRef}
+                className={cn(
+                  'fixed top-16 left-0 right-0 bottom-0 z-[50] md:hidden bg-background border-t border-border/30 flex flex-col overflow-y-auto transition-transform duration-500 ease-out',
+                  isMobileOpen
+                    ? 'data-[state=open]:translate-y-0 data-[state=open]:opacity-100'
+                    : 'data-[state=closed]:-translate-y-4 data-[state=closed]:opacity-0'
+                )}
+                style={{
+                  // Fallback background for older browsers
+                  backgroundColor: 'rgb(var(--background))',
+                }}
               >
                 {/* Studio accent line */}
                 <div className="h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
@@ -118,6 +173,7 @@ export function Navigation() {
                     <Link
                       key={item.href}
                       href={item.href}
+                      onClick={closeMobileMenu}
                       className={cn(
                         'font-display text-4xl sm:text-5xl font-light tracking-tight transition-all duration-300 py-3 border-b border-border/20',
                         isActive(item.href)
@@ -138,6 +194,7 @@ export function Navigation() {
                 <div className="p-6 border-t border-border/30 bg-card/50">
                   <Link
                     href="/contact"
+                    onClick={closeMobileMenu}
                     className="block w-full bg-accent hover:bg-accent/90 text-accent-foreground px-6 py-4 rounded-2xl font-bold text-center text-xs tracking-[0.15em] uppercase shadow-lg hover:shadow-accent/30 transition-all duration-300"
                   >
                     Start Your Project
