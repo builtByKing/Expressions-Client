@@ -1,16 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Menu, X } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import {
-  Drawer,
-  DrawerTrigger,
-  DrawerContent,
-  DrawerBackdrop,
-} from '@base-ui/react/drawer';
+import React, { useState, useEffect } from 'react';
 
 const navItems = [
   { label: 'Home', href: '/' },
@@ -19,195 +9,88 @@ const navItems = [
   { label: 'About', href: '/about' },
 ];
 
-export function Navigation() {
+export default function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const drawerRef = useRef<HTMLDivElement>(null);
-  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
-    onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Handle drawer state changes for older iOS Safari
-  const handleOpenChange = useCallback((open: boolean) => {
-    setIsTransitioning(true);
-    setIsMobileOpen(open);
-    // Reset transition state after animation
-    setTimeout(() => setIsTransitioning(false), 500);
-  }, []);
-
-  const isActive = (href: string) => {
-    if (href === '/' && pathname === '/') return true;
-    if (href !== '/' && pathname.startsWith(href)) return true;
-    return false;
-  };
-
-  const closeMobileMenu = useCallback(() => {
-    setIsMobileOpen(false);
-  }, []);
-
   return (
-    <>
-      <header
-        className={cn(
-          'sticky top-0 z-50 w-full transition-all duration-500',
-          scrolled
-            ? 'bg-white/90 dark:bg-[rgb(15,15,15)]/90 backdrop-blur-xl -webkit-backdrop-blur-xl border-b border-border/40 shadow-lg shadow-black/10 bg-[rgba(255,255,255,0.9)] dark:bg-[rgba(15,15,15,0.9)]'
-            : 'bg-transparent border-b border-transparent'
-        )}
-        style={{
-          // Fallback for browsers without backdrop-filter support
-          backgroundColor: scrolled
-            ? 'rgba(255, 255, 255, 0.9)'
-            : 'transparent',
-          // Fallback for dark mode
-          '@media (prefers-color-scheme: dark)': {
-            backgroundColor: scrolled ? 'rgba(15, 15, 15, 0.9)' : 'transparent',
-          },
-        }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 font-bold text-lg md:text-xl group relative z-[60]">
-            <div className="w-9 h-9 md:w-10 md:h-10 bg-gradient-to-br from-accent to-accent/70 rounded-xl flex items-center justify-center group-hover:shadow-lg group-hover:shadow-accent/40 transition-all duration-300">
-              <span className="text-accent-foreground font-black text-sm md:text-lg">EA</span>
-            </div>
-            <div className="flex flex-col leading-none">
-              <span className="text-foreground group-hover:text-accent transition-colors tracking-tight">
-                Expressions
-              </span>
-              <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground font-medium hidden sm:block">
-                Architects
-              </span>
-            </div>
-          </Link>
+    <header
+      className={`fixed top-0 w-full z-50 transition-all duration-500 ${scrolled
+        ? 'bg-white/90 backdrop-blur-md border-b border-gray-200 shadow-sm'
+        : 'bg-transparent border-b border-transparent'
+        }`}
+    >
+      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        {/* Logo */}
+        <a href="/" className="flex items-center gap-3 font-bold text-lg group">
+          <div className="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white">
+            EA
+          </div>
+          <span className="text-gray-900 group-hover:text-indigo-600 transition-colors">
+            Expressions
+          </span>
+        </a>
 
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-10" aria-label="Main navigation">
-            {navItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  'font-medium text-xs tracking-[0.15em] uppercase transition-all duration-300 relative group',
-                  isActive(item.href) ? 'text-accent' : 'text-foreground/80 hover:text-accent'
-                )}
-              >
-                {item.label}
-                <span
-                  className={cn(
-                    'absolute -bottom-1.5 left-0 h-px bg-accent transition-all duration-300',
-                    isActive(item.href) ? 'w-full' : 'w-0 group-hover:w-full'
-                  )}
-                />
-              </Link>
-            ))}
-          </nav>
-
-          {/* Desktop CTA */}
-          <Link href="/contact" className="hidden md:block group">
-            <button className="bg-accent hover:bg-accent/90 text-accent-foreground px-6 py-2.5 rounded-full font-bold text-xs tracking-[0.12em] uppercase shadow-md hover:shadow-lg hover:shadow-accent/30 transition-all duration-300">
-              Start Project
-            </button>
-          </Link>
-
-          {/* Mobile Hamburger - using Base UI Drawer Trigger with enhanced touch handling */}
-          <Drawer.Root modal open={isMobileOpen} onOpenChange={handleOpenChange}>
-            <Drawer.Trigger
-              className="md:hidden relative z-[60] flex items-center justify-center w-11 h-11 rounded-xl border border-border/60 bg-white/80 dark:bg-background/80 backdrop-blur-sm -webkit-backdrop-blur-sm text-foreground hover:border-accent/50 hover:text-accent transition-all duration-300 touch-manipulation"
-              style={{
-                WebkitTapHighlightColor: 'transparent',
-                touchAction: 'manipulation',
-                // Fallback background for older browsers without backdrop-filter
-                backgroundColor: 'rgba(255, 255, 255, 0.8)',
-              }}
-              aria-label="Open menu"
-              aria-expanded={isMobileOpen}
-              aria-controls="mobile-menu"
-              // Enhanced touch handling for older iOS Safari
-              onTouchStart={(e: React.TouchEvent) => {
-                e.currentTarget.click();
-              }}
-              onClick={() => { }}
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center gap-8">
+          {navItems.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="text-xs uppercase tracking-widest font-medium text-gray-600 hover:text-indigo-600 transition-colors"
             >
-              {isMobileOpen ? (
-                <X className="w-5 h-5" strokeWidth={2.5} aria-hidden="true" />
-              ) : (
-                <Menu className="w-5 h-5" strokeWidth={2.5} aria-hidden="true" />
-              )}
-            </Drawer.Trigger>
+              {item.label}
+            </a>
+          ))}
+          <a
+            href="/contact"
+            className="bg-gray-900 text-white px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-indigo-600 transition-all"
+          >
+            Start Project
+          </a>
+        </nav>
 
-            {/* Mobile Menu Drawer */}
-            <Drawer.Portal>
-              <Drawer.Backdrop
-                className="fixed inset-0 bg-black/70 backdrop-blur-sm -webkit-backdrop-blur-sm transition-opacity duration-500 data-[state=open]:opacity-100 data-[state=closed]:opacity-0"
-                style={{
-                  // Fallback for browsers without backdrop-filter
-                  backgroundColor: 'rgba(0, 0, 0, 0.7)',
-                }}
-              />
-              <Drawer.Content
-                id="mobile-menu"
-                ref={drawerRef}
-                className={cn(
-                  'fixed top-16 left-0 right-0 bottom-0 z-[50] md:hidden bg-background border-t border-border/30 flex flex-col overflow-y-auto transition-transform duration-500 ease-out',
-                  isMobileOpen
-                    ? 'data-[state=open]:translate-y-0 data-[state=open]:opacity-100'
-                    : 'data-[state=closed]:-translate-y-4 data-[state=closed]:opacity-0'
-                )}
-                style={{
-                  // Fallback background for older browsers
-                  backgroundColor: 'rgb(var(--background))',
-                }}
-              >
-                {/* Studio accent line */}
-                <div className="h-px bg-gradient-to-r from-transparent via-accent/60 to-transparent" />
+        {/* Mobile Toggle */}
+        <button
+          className="md:hidden p-2 text-gray-900"
+          onClick={() => setIsMobileOpen(!isMobileOpen)}
+        >
+          {isMobileOpen ? (
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+          ) : (
+            <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" /></svg>
+          )}
+        </button>
+      </div>
 
-                <div className="flex-1 flex flex-col gap-2 p-6 pt-10">
-                  {navItems.map((item, index) => (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={closeMobileMenu}
-                      className={cn(
-                        'font-display text-4xl sm:text-5xl font-light tracking-tight transition-all duration-300 py-3 border-b border-border/20',
-                        isActive(item.href)
-                          ? 'text-accent'
-                          : 'text-foreground hover:text-accent hover:pl-3'
-                      )}
-                      style={{ transitionDelay: `${index * 60}ms` }}
-                    >
-                      <span className="text-xs font-sans tracking-[0.2em] uppercase text-muted-foreground block mb-1">
-                        0{index + 1}
-                      </span>
-                      {item.label}
-                    </Link>
-                  ))}
-                </div>
-
-                {/* Mobile CTA */}
-                <div className="p-6 border-t border-border/30 bg-card/50">
-                  <Link
-                    href="/contact"
-                    onClick={closeMobileMenu}
-                    className="block w-full bg-accent hover:bg-accent/90 text-accent-foreground px-6 py-4 rounded-2xl font-bold text-center text-xs tracking-[0.15em] uppercase shadow-lg hover:shadow-accent/30 transition-all duration-300"
-                  >
-                    Start Your Project
-                  </Link>
-                  <p className="text-center text-xs text-muted-foreground mt-4 tracking-wide">
-                    hello@expressionsarch.com
-                  </p>
-                </div>
-              </Drawer.Content>
-            </Drawer.Portal>
-          </Drawer.Root>
+      {/* Mobile Menu */}
+      {isMobileOpen && (
+        <div className="md:hidden absolute top-20 left-0 w-full bg-white border-b border-gray-200 p-6 flex flex-col gap-6 animate-in slide-in-from-top-4">
+          {navItems.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className="text-2xl font-light text-gray-900 border-b pb-4"
+              onClick={() => setIsMobileOpen(false)}
+            >
+              {item.label}
+            </a>
+          ))}
+          <a
+            href="/contact"
+            className="bg-indigo-600 text-white text-center py-4 rounded-xl font-bold uppercase tracking-widest"
+            onClick={() => setIsMobileOpen(false)}
+          >
+            Start Project
+          </a>
         </div>
-      </header>
-    </>
+      )}
+    </header>
   );
 }
